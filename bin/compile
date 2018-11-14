@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir> <env-dir>
+
+set -e
+
+build_dir=$1
+cache_dir=$2
+env_dir=$3
+bp_dir=$(dirname $(dirname $0))
+
+echo "-----> Installing Praxis Documentation"
+bundle exec rake praxis:docs:build
+echo "       Creating '/static' directory..."
+mkdir -p static
+echo "       Moving docs from 'docs/output' to 'static/docs'..."
+mv docs/output static/docs
+echo "-----> Success! Praxis Docs are now generated and available."
