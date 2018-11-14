@@ -8,6 +8,17 @@ cache_dir=$2
 env_dir=$3
 bp_dir=$(dirname $(dirname $0))
 
+# borrowed from https://github.com/gunpowderlabs/buildpack-ruby-rake-deploy-tasks
+blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
+if [ -d "$env_dir" ]; then
+  for e in $(ls $env_dir); do
+    echo "$e" | grep -qvE "$blacklist_regex" &&
+      export "$e=$(cat $env_dir/$e)"
+    :
+  done
+fi
+
+cd $build_dir
 echo "-----> Installing Praxis Documentation"
 bundle exec rake praxis:docs:build
 echo "       Creating '/static' directory..."

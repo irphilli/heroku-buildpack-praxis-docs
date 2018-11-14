@@ -4,10 +4,9 @@
 set -e
 
 build_dir=$1
-bp_dir=$(dirname $(dirname $0))
 
-cd build_dir
-if (grep "gem.*praxis" Gemfile); then
+cd $build_dir
+if grep -q "gem.*praxis" Gemfile; then
   echo "Praxis is installed"
   exit 0
 else
