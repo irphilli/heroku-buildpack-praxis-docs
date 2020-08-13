@@ -19,6 +19,14 @@ if [ -d "$env_dir" ]; then
 fi
 
 cd $build_dir
+
+praxis_dir=`bundle show praxis`
+praxis_dir_base=`basename ${praxis_dir}`
+praxis_cache=${cache_dir}/${praxis_dir_base}/node_modules
+mkdir -p ${praxis_cache}
+ln -s ${praxis_cache} ${praxis_dir}/lib/api_browser/node_modules
+echo "-----> Using cache dir: ${praxis_cache}"
+
 echo "-----> Installing Praxis Documentation"
 bundle exec rake praxis:docs:build
 echo "       Creating '/static' directory..."
